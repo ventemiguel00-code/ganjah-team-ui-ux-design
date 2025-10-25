@@ -1,38 +1,34 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
-      '@': path.resolve(__dirname, './'),
-      '@components': path.resolve(__dirname, './components'),
-      '@utils': path.resolve(__dirname, './utils'),
-      '@types': path.resolve(__dirname, './types'),
-      '@styles': path.resolve(__dirname, './styles'),
+      // ESTE ES EL ÚNICO ALIAS NECESARIO
+      '@': path.resolve(__dirname, './src'), 
+      // ELIMINADO: Todo el bloque de aliases con números de versión
     },
   },
   build: {
-    outDir: 'dist',
-    sourcemap: false,
-    minify: 'terser',
+    target: 'esnext',
+    outDir: 'build',
+    // AÑADIMOS ESTO PARA EVITAR LA ADVERTENCIA DE VERCEL (Opcional, pero recomendado)
+    chunkSizeWarningLimit: 1000, 
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom'],
-          'ui-vendor': ['lucide-react', 'motion'],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor'; 
+          }
         },
       },
     },
   },
   server: {
-    port: 5173,
-    host: true,
-  },
-  preview: {
-    port: 4173,
-    host: true,
+    port: 3000,
+    open: true,
   },
 });
