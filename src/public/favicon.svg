@@ -1,0 +1,10 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cannabis leaf icon -->
+  <rect width="64" height="64" rx="12" fill="#1a1a1a"/>
+  <path d="M32 16 L32 48 M27 20 L32 16 L37 20 M24 24 L32 20 L40 24 M22 28 L32 26 L42 28 M23 32 L32 30 L41 32 M24 36 L32 34 L40 36 M27 40 L32 38 L37 40 M29 44 L32 42 L35 44" 
+        stroke="#4ade80" 
+        stroke-width="2" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+  <circle cx="32" cy="32" r="20" stroke="#4ade80" stroke-width="1.5" opacity="0.3" fill="none"/>
+</svg>
