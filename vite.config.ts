@@ -8,35 +8,26 @@ export default defineConfig({
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
-      // Mantener solo el alias principal para la carpeta 'src'
+      // Mantenemos solo el alias esencial para la carpeta 'src'
       '@': path.resolve(__dirname, './src'),
+      // Se eliminaron todos los aliases con números de versión
     },
   },
   build: {
     target: 'esnext',
     outDir: 'build',
-    // 1. Aumentamos el límite de advertencia para silenciar el aviso
-    // La verdadera optimización viene en rollupOptions.
-    chunkSizeWarningLimit: 1000, 
+    // 1. Aumentamos el límite de advertencia para evitar el mensaje en Vercel
+    chunkSizeWarningLimit: 1000, // 1MB
     rollupOptions: {
       output: {
-        // 2. Implementación de Code Splitting para dividir el código por librerías
+        // 2. Implementación de Code Splitting agresiva y simple
         manualChunks(id) {
-          // Si el archivo viene de node_modules (librerías de terceros)
+          // Si el archivo proviene de la carpeta de dependencias (node_modules)
           if (id.includes('node_modules')) {
-            // Agrupa las librerías de UI y gráficos grandes en un chunk específico
-            if (
-              id.includes('@radix-ui') || 
-              id.includes('recharts') || 
-              id.includes('embla-carousel-react')
-            ) {
-              return 'vendor-ui-data';
-            }
-            // Agrupa el resto de las dependencias de node_modules en un chunk general
-            return 'vendor-base';
+            // Se agrupará TODO el código de librerías de terceros en un único archivo 'vendor'
+            return 'vendor';
           }
-          // El código de tu aplicación (todo lo que no está en node_modules)
-          // se dejará en el chunk 'index' principal.
+          // El resto del código es el de tu aplicación
         },
       },
     },
