@@ -8,26 +8,23 @@ export default defineConfig({
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
-      // Mantenemos solo el alias esencial para la carpeta 'src'
-      '@': path.resolve(__dirname, './src'),
-      // Se eliminaron todos los aliases con números de versión
+      // ESTE ES EL ÚNICO ALIAS CORRECTO Y NECESARIO
+      '@': path.resolve(__dirname, './src'), 
+      // *** SE ELIMINÓ TODO EL BLOQUE DE ALIASES CON NÚMEROS DE VERSIÓN ***
     },
   },
   build: {
     target: 'esnext',
     outDir: 'build',
-    // 1. Aumentamos el límite de advertencia para evitar el mensaje en Vercel
+    // Opcional: Aumentamos el límite para evitar la advertencia de Vercel
     chunkSizeWarningLimit: 1000, // 1MB
     rollupOptions: {
       output: {
-        // 2. Implementación de Code Splitting agresiva y simple
+        // Optimización: Agrupa todas las librerías de node_modules en un solo archivo 'vendor'
         manualChunks(id) {
-          // Si el archivo proviene de la carpeta de dependencias (node_modules)
           if (id.includes('node_modules')) {
-            // Se agrupará TODO el código de librerías de terceros en un único archivo 'vendor'
-            return 'vendor';
+            return 'vendor'; 
           }
-          // El resto del código es el de tu aplicación
         },
       },
     },
